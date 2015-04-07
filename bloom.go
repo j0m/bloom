@@ -56,7 +56,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/willf/bitset"
+	"./bitset"
 )
 
 // A BloomFilter is a representation of a set of _n_ items, where the main
@@ -66,6 +66,12 @@ type BloomFilter struct {
 	m uint
 	k uint
 	b *bitset.BitSet
+}
+
+func NewFromNP(n float64, p float64) *BloomFilter {
+	m := math.Ceil((n * math.Log(p)) / math.Log(1.0 / (math.Pow(2.0, math.Log(2.0)))));
+        k := math.Ceil(math.Log(2.0) * m / n);
+	return New(uint(m), uint(k))
 }
 
 // New creates a new Bloom filter with _m_ bits and _k_ hashing functions
